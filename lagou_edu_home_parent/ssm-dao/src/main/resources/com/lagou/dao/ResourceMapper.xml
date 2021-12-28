@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lagou.dao.ResourceMapper">
+
+    <!-- 资源分页&多条件查询 -->
+    <select id="findAllResourceByPage" parameterType="ResourceVO" resultType="Resource">
+        select * from resource
+        <where>
+            <if test="null != name and '' != name">
+                and name = #{name}
+            </if>
+            <if test="null != url and '' != url">
+                and url = #{url}
+            </if>
+            <if test="null != categoryId and '' != categoryId and 0 != categoryId">
+                and category_id = #{categoryId}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加资源 -->
+    <insert id="saveResource" parameterType="Resource">
+        insert into resource values(null, #{name}, #{url}, #{categoryId}, #{description}, #{createdTime},
+            #{updatedTime}, #{createdBy}, #{updatedBy})
+    </insert>
+
+    <!-- 修改资源 -->
+    <update id="updateResource" parameterType="Resource">
+        update resource
+        <set>
+            <if test="null != name and '' != name">
+                name = #{name},
+            </if>
+            <if test="null != url and '' != url">
+                url = #{url},
+            </if>
+            <if test="null != categoryId and '' != categoryId and 0 != categoryId">
+                category_id = #{categoryId},
+            </if>
+            <if test="null != description and '' != description">
+                description = #{description},
+            </if>
+            <if test="null != updatedTime">
+                updated_time = #{updatedTime},
+            </if>
+            <if test="null != updatedBy and '' != updatedBy">
+                updated_by = #{updatedBy},
+            </if>
+        </set>
+    </update>
+
+    <!-- 删除资源信息 -->
+    <delete id="deleteResource" parameterType="int">
+        delete from resource where id = #{id}
+    </delete>
+</mapper>
